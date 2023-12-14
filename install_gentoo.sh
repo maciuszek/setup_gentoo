@@ -1,6 +1,8 @@
 #!/bin/bash
 # Assumes called by init_gentoo.sh
 
+set -u
+
 export EFI_PARTITION ROOT_PARTITION
 source /etc/profile
 mkdir /efi

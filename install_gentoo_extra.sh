@@ -1,6 +1,8 @@
 #!/bin/bash
 # Assumes called by install_gentoo.sh
 
+set -u
+
 emerge --ask net-misc/dhcpcd \
     sys-apps/mlocate \
     app-shells/bash-completion \
