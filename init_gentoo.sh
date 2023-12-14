@@ -54,7 +54,7 @@ sudo wget $STAGE_TARBALL
 sudo tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
 
 sudo cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
-sudo cp install_gentoo.sh /mnt/gentoo/
+sudo cp *_gentoo*.sh /mnt/gentoo/
 sudo arch-chroot /mnt/gentoo/ /usr/bin/env \
     EFI_PARTITION=$EFI_PARTITION \
     ROOT_PARTITION=$ROOT_PARTITION \
