@@ -15,6 +15,7 @@ cp /usr/share/portage/config/repos.conf /etc/portage/repos.conf/gentoo.conf
 
 emerge-webrsync
 
+# Hardcoding for NVIDIA GPU
 # TODO: fix VIDEO_CARDS variable
 cp /etc/portage/make.conf /etc/portage/make.conf.orig
 patch -p0 <<EOF
@@ -47,19 +48,19 @@ echo 'sys-apps/systemd cryptsetup' > /etc/portage/package.use/systemd
 emerge --ask app-portage/cpuid2cpuflags
 echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
 
-eselect profile set 8 # default/linux/amd64/17.1/desktop/gnome/systemd/merged-usr (run `eselect profile list` to see the options)
+eselect profile set 8 # Hardcoding default/linux/amd64/17.1/desktop/gnome/systemd/merged-usr (run `eselect profile list` to see the options)
 
 emerge --ask --verbose --update --deep --newuse @world
 
 cp /etc/localtime /etc/localtime.orig
-ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # TODO: Hardcoded
+ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # Hardcoding
 
-eselect locale set 4 # en_US (run `eselect locale list` to see the options)
+eselect locale set 4 # Hardcoding en_US (run `eselect locale list` to see the options)
 env-update && source /etc/profile
 
 echo "Installing the kernel..."
 
-emerge --ask sys-kernel/linux-firmware sys-firmware/intel-microcode
+emerge --ask sys-kernel/linux-firmware sys-firmware/intel-microcode # Hardcoding For Intel CPU https://wiki.gentoo.org/wiki/Microcode#Microcode_firmware_blobs
 emerge --ask sys-kernel/installkernel-gentoo
 emerge --ask sys-kernel/gentoo-kernel
 
@@ -70,7 +71,7 @@ chmod 600 /swapfile
 mkswap /swapfile
 
 ROOT_PARTITION_UUID=$(source <(blkid | grep ^$ROOT_PARTITION: | awk -F': ' '{ print $2 }') && echo $UUID)
-echo "root	UUID=$ROOT_PARTITION_UUID	/crypt_key.luks	ext4	luks,discard" > /etc/crypttab
+echo "root	UUID=$ROOT_PARTITION_UUID	/crypt_key.luks	ext4	luks,discard" > /etc/crypttab # Hardcoding for NVMe TRIM
 
 cp /etc/fstab /etc/fstab.orig
 EFI_PARTITION_UUID=$(source <(blkid | grep ^$EFI_PARTITION: | awk -F': ' '{ print $2 }') && echo $UUID)

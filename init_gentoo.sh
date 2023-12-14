@@ -16,6 +16,7 @@
 # https://wiki.gentoo.org/wiki/Systemd
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
 # https://wiki.gentoo.org/wiki/Microcode
+# https://wiki.gentoo.org/wiki/Intel_microcode
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Tools
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Bootloader
