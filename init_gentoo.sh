@@ -35,10 +35,12 @@
 
 # Note: This script assumes a GPT partition table with an EFI and 1 unformatted Linux filsystem parition precreated (use parted/gparted to resize and create)
 
-STAGE_TARBALL=https://distfiles.gentoo.org/releases/amd64/autobuilds/20231126T163200Z/stage3-amd64-desktop-systemd-mergedusr-20231126T163200Z.tar.xz # Set from https://www.gentoo.org/downloads/ (must be stage3-amd64-desktop-systemd-mergedusr-* tarball)
+set -u
 
-EFI_PARTITION=/dev/nvme0n1p1 # Set
-ROOT_PARTITION=/dev/nvme0n1p6 # Set
+STAGE_TARBALL=$STAGE_TARBALL # Set from https://www.gentoo.org/downloads/ (must be stage3-amd64-desktop-systemd-mergedusr-* tarball)
+
+EFI_PARTITION=$EFI_PARTITION # Set
+ROOT_PARTITION=$ROOT_PARTITION # Set
 
 sudo cryptsetup luksFormat --type luks1 --key-size 512 $ROOT_PARTITION
 dd bs=8388608 count=1 if=/dev/urandom of=crypt_key.luks
