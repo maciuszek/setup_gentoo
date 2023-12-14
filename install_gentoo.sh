@@ -48,7 +48,7 @@ eselect profile set 8 # default/linux/amd64/17.1/desktop/gnome/systemd/merged-us
 emerge --ask --verbose --update --deep --newuse @world
 
 cp /etc/localtime /etc/localtime.orig
-ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime
+ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # TODO: Hardcoded
 
 eselect locale set 4 # en_US (run `eselect locale list` to see the options)
 env-update && source /etc/profile
