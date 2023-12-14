@@ -39,8 +39,8 @@ set -u
 
 STAGE_TARBALL=$STAGE_TARBALL # Set from https://www.gentoo.org/downloads/ (must be stage3-amd64-desktop-systemd-mergedusr-* tarball)
 
-EFI_PARTITION=$EFI_PARTITION # Set
-ROOT_PARTITION=$ROOT_PARTITION # Set
+EFI_PARTITION=$EFI_PARTITION
+ROOT_PARTITION=$ROOT_PARTITION
 
 sudo cryptsetup luksFormat --type luks1 --key-size 512 $ROOT_PARTITION
 dd bs=8388608 count=1 if=/dev/urandom of=crypt_key.luks

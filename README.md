@@ -4,5 +4,6 @@
 2. Boot into a live gentoo environment https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Media
 3. Configure networking
 4. Pull this repository
-5. Review and update scripts where applicable (especially the variaibles init_gentoo.sh)
-6. Run: init_gentoo.sh
+5. Review all the scripts
+6. Set enviornment variables based on example.env
+7. Run: init_gentoo.sh
