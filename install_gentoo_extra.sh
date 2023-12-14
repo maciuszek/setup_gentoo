@@ -3,6 +3,8 @@
 
 set -u
 
+echo "Installing user software..."
+
 emerge --ask net-misc/dhcpcd \
     sys-apps/mlocate \
     app-shells/bash-completion \
@@ -10,6 +12,8 @@ emerge --ask net-misc/dhcpcd \
     sys-fs/dosfstools \
     sys-block/io-scheduler-udev-rules \
     net-wireless/iw net-wireless/wpa_supplicant
+
+echo "Configuring the system and basic user..."
 
 systemctl enable dhcpcd
 systemctl enable sshd

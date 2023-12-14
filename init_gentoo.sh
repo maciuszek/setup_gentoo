@@ -42,18 +42,24 @@ STAGE_TARBALL=$STAGE_TARBALL # Set from https://www.gentoo.org/downloads/ (must 
 EFI_PARTITION=$EFI_PARTITION
 ROOT_PARTITION=$ROOT_PARTITION
 
+echo "Encrypting and formating $ROOT_PARTITION..."
+
 sudo cryptsetup luksFormat --type luks1 --key-size 512 $ROOT_PARTITION
 dd bs=8388608 count=1 if=/dev/urandom of=crypt_key.luks
 sudo cryptsetup luksAddKey $ROOT_PARTITION crypt_key.luks
-sudo cryptsetup luksOpen $ROOT_PARTITION root
+sudo cryptsetup --key-file crypt_key.luks luksOpen $ROOT_PARTITION root
 sudo mkfs.ext4 /dev/mapper/root
 sudo mkdir /mnt/gentoo
 sudo mount /dev/mapper/root /mnt/gentoo
 sudo cp crypt_key.luks /mnt/gentoo/
 
+echo "Downloading and extracting the base system..."
+
 cd /mnt/gentoo
 sudo wget $STAGE_TARBALL
 sudo tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
+
+echo "Rooting into the installation..."
 
 sudo cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 sudo cp *_gentoo*.sh /mnt/gentoo/

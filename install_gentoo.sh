@@ -8,6 +8,8 @@ source /etc/profile
 mkdir /efi
 mount $EFI_PARTITION /efi
 
+echo "Configuring and installing the system..."
+
 mkdir --parents /etc/portage/repos.conf
 cp /usr/share/portage/config/repos.conf /etc/portage/repos.conf/gentoo.conf
 
@@ -55,9 +57,13 @@ ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # TODO: Hardcoded
 eselect locale set 4 # en_US (run `eselect locale list` to see the options)
 env-update && source /etc/profile
 
+echo "Installing the kernel..."
+
 emerge --ask sys-kernel/linux-firmware sys-firmware/intel-microcode
 emerge --ask sys-kernel/installkernel-gentoo
 emerge --ask sys-kernel/gentoo-kernel
+
+echo "Setting up system boot..."
 
 fallocate -l 12GiB /swapfile
 chmod 600 /swapfile
@@ -97,6 +103,8 @@ grub-install --target=x86_64-efi --efi-directory=/efi
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # TODO: https://wiki.gentoo.org/wiki/Secure_Boot
+
+echo "Configuring the system..."
 
 systemd-machine-id-setup
 systemd-firstboot --prompt
