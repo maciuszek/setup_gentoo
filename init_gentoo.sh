@@ -2,7 +2,6 @@
 
 # Basic Gentoo Installation With Systemd On A LUKs Encrypted EXT4 Filesystem For Systems With An NVMe SSD, AMD64 Intel CPU, NVIDIA GPU and UEFI
 
-# TODO: Add all other debug links especially related to crypttab
 # https://wiki.gentoo.org/wiki/Handbook:AMD64
 # https://wiki.gentoo.org/wiki/Full_Disk_Encryption_From_Scratch
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks
