@@ -16,7 +16,6 @@ cp /usr/share/portage/config/repos.conf /etc/portage/repos.conf/gentoo.conf
 emerge-webrsync
 
 # Hardcoding for NVIDIA GPU
-# TODO: fix VIDEO_CARDS variable
 cp /etc/portage/make.conf /etc/portage/make.conf.orig
 patch -p0 <<EOF
 --- /etc/portage/make.conf.orig 2023-12-12 13:34:45.515968935 -0500
@@ -37,7 +36,7 @@ patch -p0 <<EOF
 +
 +MAKEOPTS="-j4 -l4"
 +
-+VIDEO_CARDS="nvidia-drivers"
++VIDEO_CARDS="intel nvidia vesa"
 +ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE"
 EOF
 emerge --ask app-portage/mirrorselect

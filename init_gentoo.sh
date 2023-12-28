@@ -11,7 +11,7 @@
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Base
 # https://wiki.gentoo.org/wiki/License_groups
-# https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers
+# https://wiki.gentoo.org/wiki//etc/portage/make.conf#VIDEO_CARDS
 # https://wiki.gentoo.org/wiki/Systemd
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
 # https://wiki.gentoo.org/wiki/Microcode
