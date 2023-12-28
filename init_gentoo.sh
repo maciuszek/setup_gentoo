@@ -12,6 +12,7 @@
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Base
 # https://wiki.gentoo.org/wiki/License_groups
 # https://wiki.gentoo.org/wiki//etc/portage/make.conf#VIDEO_CARDS
+# https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers
 # https://wiki.gentoo.org/wiki/Systemd
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
 # https://wiki.gentoo.org/wiki/Microcode
@@ -28,10 +29,12 @@
 # https://wiki.gentoo.org/wiki/Dm-crypt_full_disk_encryption
 # https://wiki.archlinux.org/title/dm-crypt/System_configuration
 # https://wiki.archlinux.org/title/dm-crypt/Encrypting_an_entire_system
-# https://wiki.gentoo.org/wiki/Secure_Boot
-# https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide/Configuring_Secure_Boot
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Finalizing
 # https://wiki.gentoo.org/wiki/GNOME/Guide
+# https://wiki.gentoo.org/wiki/Secure_Boot
+# https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide/Configuring_Secure_Boot
+# https://wiki.gentoo.org/wiki/Project:Distribution_Kernel
+# https://wiki.gentoo.org/wiki/Shim
 
 # Note: This script assumes a GPT partition table with an EFI and 1 unformatted Linux filsystem parition precreated (use parted/gparted to resize and create)
 
