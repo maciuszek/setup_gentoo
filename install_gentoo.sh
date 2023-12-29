@@ -107,9 +107,11 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 echo 'sys-kernel/installkernel-gentoo dracut grub' > /etc/portage/package.use/installkernel-gentoo
 
-emerge --ask sys-boot/shim sys-boot/efibootmgr
-cp /usr/share/shim/BOOTX64.EFI /efi/EFI/gentoo/
-cp /usr/share/shim/mmx64.efi /efi/EFI/gentoo/
+wget https://dl.fedoraproject.org/pub/fedora/linux/releases/39/Everything/x86_64/os/Packages/s/shim-x64-15.6-2.x86_64.rpm # get signed shim (the shim in portage isn't signed)
+rpmunpack shim-x64-15.6-2.x86_64.rpm
+cp /shim-x64-15.6-2.x86_64/boot/efi/EFI/fedora/shimx64.efi /efi/EFI/gentoo/BOOTX64.EFI
+cp /shim-x64-15.6-2.x86_64/boot/efi/EFI/fedora/mmx64.efi /efi/EFI/gentoo/
+emerge --ask sys-boot/efibootmgr
 efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "gentoo shim" --loader /EFI/gentoo/BOOTX64.EFI
 
 echo "Configuring the system..."
