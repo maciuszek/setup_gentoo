@@ -105,6 +105,8 @@ EOF
 grub-install --target=x86_64-efi --efi-directory=/efi
 grub-mkconfig -o /boot/grub/grub.cfg
 
+echo 'sys-kernel/installkernel-gentoo dracut grub' > /etc/portage/package.use/installkernel-gentoo
+
 emerge --ask sys-boot/shim sys-boot/efibootmgr
 cp /usr/share/shim/BOOTX64.EFI /efi/EFI/gentoo/
 cp /usr/share/shim/mmx64.efi /efi/EFI/gentoo/
