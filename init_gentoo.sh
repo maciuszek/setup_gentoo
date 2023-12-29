@@ -15,6 +15,9 @@
 # https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers
 # https://wiki.gentoo.org/wiki/Systemd
 # https://wiki.gentoo.org/wiki/GNOME/Guide
+# https://wiki.gentoo.org/wiki/NetworkManager
+# https://wiki.gentoo.org/wiki/USE_flag
+# https://www.gentoo.org/support/use-flags/
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
 # https://wiki.gentoo.org/wiki/Microcode
 # https://wiki.gentoo.org/wiki/Intel_microcode
