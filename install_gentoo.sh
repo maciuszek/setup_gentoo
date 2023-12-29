@@ -35,9 +35,9 @@ patch -p0 <<EOF
  LC_MESSAGES=C.utf8
 +
 +MAKEOPTS="-j4 -l4"
-+USE="\${USE} secureboot networkmanager"
++USE="\${USE} networkmanager dist-kernel dbus"
 +VIDEO_CARDS="intel nvidia vesa"
-+ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE"
++ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE Microsoft-vscode"
 EOF
 emerge --ask app-portage/mirrorselect
 mirrorselect -i -o >> /etc/portage/make.conf # https://mirror.csclub.uwaterloo.ca/gentoo-distfiles
@@ -104,6 +104,11 @@ patch -p0 <<EOF
 EOF
 grub-install --target=x86_64-efi --efi-directory=/efi
 grub-mkconfig -o /boot/grub/grub.cfg
+
+emerge --ask sys-boot/shim sys-boot/efibootmgr
+cp /usr/share/shim/BOOTX64.EFI /efi/EFI/gentoo/
+cp /usr/share/shim/mmx64.efi /efi/EFI/gentoo/
+efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "gentoo shim" --loader /EFI/gentoo/BOOTX64.EFI
 
 echo "Configuring the system..."
 
