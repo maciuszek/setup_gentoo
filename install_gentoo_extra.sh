@@ -5,13 +5,10 @@ set -u
 
 echo "Install drivers..."
 
-# Todo remove prime-run
-emerge --ask nvidia-drivers \
-    x11-misc/prime-run
+emerge --ask nvidia-drivers
 
 echo "Installing user software..."
 
-# Todo remove mesa
 emerge --ask net-misc/dhcpcd \
     sys-apps/mlocate \
     app-shells/bash-completion \
@@ -21,17 +18,16 @@ emerge --ask net-misc/dhcpcd \
     net-wireless/iw net-wireless/wpa_supplicant \
     net-misc/networkmanager \
     app-admin/sudo \
-    media-libs/mesa \
-    x11-apps/mesa-progs \
     x11-apps/xrandr \
+    x11-apps/mesa-progs \
     app-editors/vim \
     app-editors/vscode
 
-# Todo remove switcheroo-control
+emerge --ask www-client/google-chrome
+
 echo "media-libs/libsndfile minimal" > /etc/portage/package.use/libsndfile # Fix circular dependency
 emerge --ask gnome-base/gnome \
     gnome-extra/gnome-tweaks \
-    sys-power/switcheroo-control \
     dev-vcs/gitg
 
 env-update && source /etc/profile

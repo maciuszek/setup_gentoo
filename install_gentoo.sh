@@ -36,8 +36,8 @@ patch -p0 <<EOF
 +
 +MAKEOPTS="-j4 -l4"
 +USE="\${USE} networkmanager dist-kernel dbus"
-+VIDEO_CARDS="intel nvidia vesa"
-+ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE Microsoft-vscode"
++VIDEO_CARDS="intel nvidia"
++ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE Microsoft-vscode google-chrome"
 EOF
 emerge --ask app-portage/mirrorselect
 mirrorselect -i -o >> /etc/portage/make.conf # https://mirror.csclub.uwaterloo.ca/gentoo-distfiles
