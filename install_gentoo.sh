@@ -35,7 +35,7 @@ patch -p0 <<EOF
  LC_MESSAGES=C.utf8
 +
 +MAKEOPTS="-j4 -l4"
-+
++USE="\${USE} secureboot networkmanager"
 +VIDEO_CARDS="intel nvidia vesa"
 +ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE"
 EOF
@@ -91,7 +91,6 @@ dracut --force --kver $(eselect kernel show | grep '/usr/src/linux-' | awk -F '/
 echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
 echo "sys-boot/grub:2 device-mapper" > /etc/portage/package.use/grub2
 emerge --ask sys-boot/grub
-emerge sys-boot/shim sys-boot/mokutil
 cp /etc/default/grub /etc/default/grub.orig
 patch -p0 <<EOF
 --- /etc/default/grub.orig      2023-12-13 10:34:21.036455527 -0500
@@ -103,12 +102,8 @@ patch -p0 <<EOF
 +
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
-grub-install --target=x86_64-efi --efi-directory=/efi --sbat /usr/share/grub/sbat.csv
-cp /usr/share/shim/BOOTX64.EFI /efi/EFI/gentoo/BOOTX64.EFI
-cp /usr/share/shim/mmx64.efi /efi/EFI/gentoo/mmx64.efi
+grub-install --target=x86_64-efi --efi-directory=/efi
 grub-mkconfig -o /boot/grub/grub.cfg
-
-# TODO: https://wiki.gentoo.org/wiki/Secure_Boot
 
 echo "Configuring the system..."
 

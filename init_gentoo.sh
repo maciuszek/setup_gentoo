@@ -14,6 +14,7 @@
 # https://wiki.gentoo.org/wiki//etc/portage/make.conf#VIDEO_CARDS
 # https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers
 # https://wiki.gentoo.org/wiki/Systemd
+# https://wiki.gentoo.org/wiki/GNOME/Guide
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
 # https://wiki.gentoo.org/wiki/Microcode
 # https://wiki.gentoo.org/wiki/Intel_microcode
@@ -30,7 +31,6 @@
 # https://wiki.archlinux.org/title/dm-crypt/System_configuration
 # https://wiki.archlinux.org/title/dm-crypt/Encrypting_an_entire_system
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Finalizing
-# https://wiki.gentoo.org/wiki/GNOME/Guide
 # https://wiki.gentoo.org/wiki/Secure_Boot
 # https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide/Configuring_Secure_Boot
 # https://wiki.gentoo.org/wiki/Project:Distribution_Kernel
@@ -47,20 +47,20 @@ ROOT_PARTITION=$ROOT_PARTITION
 
 echo "Encrypting and formating $ROOT_PARTITION..."
 
-sudo cryptsetup luksFormat --type luks1 --key-size 512 $ROOT_PARTITION
+cryptsetup luksFormat --type luks1 --key-size 512 $ROOT_PARTITION
 dd bs=8388608 count=1 if=/dev/urandom of=crypt_key.luks
-sudo cryptsetup luksAddKey $ROOT_PARTITION crypt_key.luks
+cryptsetup luksAddKey $ROOT_PARTITION crypt_key.luks
 sudo cryptsetup --key-file crypt_key.luks luksOpen $ROOT_PARTITION root
-sudo mkfs.ext4 /dev/mapper/root
+mkfs.ext4 /dev/mapper/root
 sudo mkdir /mnt/gentoo
 sudo mount /dev/mapper/root /mnt/gentoo
 sudo cp crypt_key.luks /mnt/gentoo/
 
 echo "Downloading and extracting the base system..."
 
-cd /mnt/gentoo
+(cd /mnt/gentoo
 sudo wget $STAGE_TARBALL
-sudo tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
+sudo tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner)
 
 echo "Rooting into the installation..."
 

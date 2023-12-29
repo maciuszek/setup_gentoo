@@ -11,8 +11,10 @@ emerge --ask net-misc/dhcpcd \
     sys-fs/e2fsprogs \
     sys-fs/dosfstools \
     sys-block/io-scheduler-udev-rules \
-    net-wireless/iw net-wireless/wpa_supplicant \
-    gnome-base/gnome
+    net-wireless/iw net-wireless/wpa_supplicant
+
+echo "media-libs/libsndfile minimal" > /etc/portage/package.use/libsndfile # Fix circular dependency
+emerge --ask gnome-base/gnome
 
 env-update && source /etc/profile
 
