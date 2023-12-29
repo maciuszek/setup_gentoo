@@ -41,6 +41,8 @@
 
 # Note: This script assumes a GPT partition table with an EFI and 1 unformatted Linux filsystem parition precreated (use parted/gparted to resize and create)
 
+# TODO add information about preset secureboot keys
+
 set -u
 
 STAGE_TARBALL=$STAGE_TARBALL # Set from https://www.gentoo.org/downloads/ (must be stage3-amd64-desktop-systemd-mergedusr-* tarball)
