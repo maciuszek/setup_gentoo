@@ -102,8 +102,8 @@ patch -p0 <<EOF
 +
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
-grub-mkstandalone --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
 grub-mkconfig -o /boot/grub/grub.cfg
+grub-mkstandalone --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
 emerge --ask sys-boot/efibootmgr
 efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
 
