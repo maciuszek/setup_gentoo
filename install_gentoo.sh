@@ -102,21 +102,52 @@ patch -p0 <<EOF
 +
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
-grub-install --target=x86_64-efi --efi-directory=/efi
+grub-mkstandalone --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
 grub-mkconfig -o /boot/grub/grub.cfg
+emerge --ask sys-boot/efibootmgr
+efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
 
 echo 'sys-kernel/installkernel-gentoo dracut grub' > /etc/portage/package.use/installkernel-gentoo
 
-emerge --ask sys-boot/shim \
+emerge --ask app-crypt/sbsigntools \
     app-crypt/efitools \
-    sys-boot/efibootmgr \
-    app-crypt/sbsigntools \
     dev-libs/openssl
-cp /usr/share/shim/BOOTX64.EFI /efi/EFI/gentoo/BOOTX64.EFI
-cp /usr/share/shim/mmx64.efi /efi/EFI/gentoo/mmx64.efi
-sbsign --key /efikeys/PK.key --cert /efikeys/PK.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi 
-sbsign --key /efikeys/PK.key --cert /efikeys/PK.crt --output /efi/EFI/gentoo/BOOTX64.EFI /efi/EFI/gentoo/BOOTX64.EFI
-efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "gentoo shim" --loader /EFI/gentoo/BOOTX64.EFI
+
+mkdir -p /efikeys
+chmod -v 700 /efikeys
+
+efi-readvar -v KEK -o old_KEK.esl
+efi-readvar -v db -o old_db.esl
+efi-readvar -v db -o old_db.esl
+efi-readvar -v dbx -o old_dbx.esl
+
+openssl req -new -x509 -newkey rsa:2048 -subj "/CN=maciuszek's platform key/" -keyout PK.key -out PK.crt -days 3650 -nodes -sha256
+openssl req -new -x509 -newkey rsa:2048 -subj "/CN=maciuszek's key-exchange-key/" -keyout KEK.key -out KEK.crt -days 3650 -nodes -sha256
+openssl req -new -x509 -newkey rsa:2048 -subj "/CN=maciuszek's kernel-signing key/" -keyout db.key -out db.crt -days 3650 -nodes -sha256
+
+chmod -v 400 *.key 
+
+cert-to-efi-sig-list -g "$(uuidgen)" PK.crt PK.esl
+sign-efi-sig-list -k PK.key -c PK.crt PK PK.esl PK.auth
+
+cert-to-efi-sig-list -g "$(uuidgen)" KEK.crt KEK.esl
+sign-efi-sig-list -a -k PK.key -c PK.crt KEK KEK.esl KEK.auth
+
+cert-to-efi-sig-list -g "$(uuidgen)" db.crt db.esl
+sign-efi-sig-list -a -k KEK.key -c KEK.crt db db.esl db.auth
+
+sign-efi-sig-list -k KEK.key -c KEK.crt dbx old_dbx.esl old_dbx.auth
+
+openssl x509 -outform DER -in PK.crt -out PK.cer
+openssl x509 -outform DER -in KEK.crt -out KEK.cer
+openssl x509 -outform DER -in db.crt -out db.cer
+
+cat old_KEK.esl KEK.esl > compound_KEK.esl
+cat old_db.esl db.esl > compound_db.esl
+sign-efi-sig-list -k PK.key -c PK.crt KEK compound_KEK.esl compound_KEK.auth
+sign-efi-sig-list -k KEK.key -c KEK.crt db compound_db.esl compound_db.auth
+
+sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
 
 echo "Configuring the system..."
 
