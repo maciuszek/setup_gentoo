@@ -1,8 +1,7 @@
-# Assumes create_secure_boot_keys.sh has been executed and secure boot keys in bios/uefi have been cleared
+#!/bin/bash
+# Assumes secure boot keys in bios/uefi have been cleared (confirm keys are cleared with `efi-readvar`)
 
 cd /etc/efikeys
-
-# confirm keys are cleared with `efi-readvar`
 
 efi-updatevar -e -f old_dbx.esl dbx
 efi-updatevar -e -f compound_db.esl db

@@ -41,8 +41,6 @@
 
 # Note: This script assumes a GPT partition table with an EFI and 1 unformatted Linux filsystem parition precreated (use parted/gparted to resize and create)
 
-# TODO add information about preset secureboot keys
-
 set -u
 
 STAGE_TARBALL=$STAGE_TARBALL # Set from https://www.gentoo.org/downloads/ (must be stage3-amd64-desktop-systemd-mergedusr-* tarball)
@@ -70,7 +68,7 @@ sudo tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner)
 echo "Rooting into the installation..."
 
 sudo cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
-sudo cp *_gentoo*.sh /mnt/gentoo/
+sudo cp install_gentoo.sh /mnt/gentoo/
 sudo arch-chroot /mnt/gentoo/ /usr/bin/env \
     EFI_PARTITION=$EFI_PARTITION \
     ROOT_PARTITION=$ROOT_PARTITION \
