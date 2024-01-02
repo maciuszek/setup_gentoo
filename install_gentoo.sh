@@ -103,7 +103,7 @@ patch -p0 <<EOF
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
 grub-mkconfig -o /boot/grub/grub.cfg
-grub-mkstandalone --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
+grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
 emerge --ask sys-boot/efibootmgr
 efibootmgr --unicode --disk /dev/nvme0n1 --part 1 --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
 
@@ -148,6 +148,7 @@ sign-efi-sig-list -k PK.key -c PK.crt KEK compound_KEK.esl compound_KEK.auth
 sign-efi-sig-list -k KEK.key -c KEK.crt db compound_db.esl compound_db.auth
 
 sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
+sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/gentoo/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
 
 echo "Configuring the system..."
 

@@ -16,7 +16,6 @@ emerge --ask net-misc/dhcpcd \
     sys-fs/dosfstools \
     sys-block/io-scheduler-udev-rules \
     net-wireless/iw net-wireless/wpa_supplicant \
-    net-misc/networkmanager \
     app-admin/sudo \
     x11-apps/xrandr \
     x11-apps/mesa-progs \
@@ -28,6 +27,7 @@ emerge --ask www-client/google-chrome
 echo "media-libs/libsndfile minimal" > /etc/portage/package.use/libsndfile # Fix circular dependency
 emerge --ask gnome-base/gnome \
     gnome-extra/gnome-tweaks \
+    net-misc/networkmanager \
     dev-vcs/gitg
 
 env-update && source /etc/profile
