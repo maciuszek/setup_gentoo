@@ -196,13 +196,13 @@ function configure_installation {
 
     systemctl enable systemd-timesyncd.service
 
+    env-update
+
     passwd
 
     read -p "Enter username for basic user: " USERNAME
     useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
     passwd $USERNAME
-
-    env-update
 }
 
 function clean_installation {
