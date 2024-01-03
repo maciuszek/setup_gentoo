@@ -31,6 +31,7 @@ LC_MESSAGES=C.utf8
 +MAKEOPTS="-j4 -l4"
 +USE="\${USE} networkmanager dist-kernel dbus"
 +VIDEO_CARDS="intel nvidia"
++ABI_X86="32 64"
 +ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE Microsoft-vscode google-chrome"
 EOF
     emerge --ask app-portage/mirrorselect
@@ -184,8 +185,6 @@ function install_extra_software {
 }
 
 function configure_installation {
-    echo 'sys-kernel/installkernel-gentoo dracut grub' > /etc/portage/package.use/installkernel-gentoo
-
     cp /etc/localtime /etc/localtime.orig
     ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # Hardcoding
 
