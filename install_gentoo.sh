@@ -47,7 +47,8 @@ EOF
 }
 
 function install_kernel {
-    emerge --ask sys-kernel/linux-firmware sys-firmware/intel-microcode # Hardcoding For Intel CPU https://wiki.gentoo.org/wiki/Microcode#Microcode_firmware_blobs
+    emerge --ask sys-kernel/linux-firmware 
+    emerge --ask sys-firmware/intel-microcode # Hardcoding For Intel CPU https://wiki.gentoo.org/wiki/Microcode#Microcode_firmware_blobs
     emerge --ask sys-kernel/installkernel-gentoo
     emerge --ask sys-kernel/gentoo-kernel
 }
