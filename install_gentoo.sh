@@ -209,7 +209,6 @@ function clean_installation {
 }
 
 export EFI_PARTITION ROOT_PARTITION
-source /etc/profile
 mkdir /efi
 mount $EFI_PARTITION /efi
 
