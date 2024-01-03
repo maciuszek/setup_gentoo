@@ -36,10 +36,10 @@ EOF
     emerge --ask app-portage/mirrorselect
     mirrorselect -i -o >> /etc/portage/make.conf # https://mirror.csclub.uwaterloo.ca/gentoo-distfiles
 
-    echo 'sys-apps/systemd cryptsetup' > /etc/portage/package.use/systemd
-
     emerge --ask app-portage/cpuid2cpuflags
-    echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
+    echo "$(cpuid2cpuflags)" > /etc/portage/make.conf
+
+    echo 'sys-apps/systemd cryptsetup' > /etc/portage/package.use/systemd
 
     eselect profile set 8 # Hardcoding default/linux/amd64/17.1/desktop/gnome/systemd/merged-usr (run `eselect profile list` to see the options)
 
