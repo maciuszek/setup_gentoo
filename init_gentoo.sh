@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Basic Gentoo Installation With Systemd On A LUKs Encrypted EXT4 Filesystem For Systems With An NVMe SSD, AMD64 Intel CPU, NVIDIA GPU and UEFI
+# This script assumes a GPT partition table with an EFI and 1 unformatted Linux filsystem parition precreated (use parted/gparted to resize and create)
 
+# Sources:
 # https://wiki.gentoo.org/wiki/Handbook:AMD64
 # https://wiki.gentoo.org/wiki/Full_Disk_Encryption_From_Scratch
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks
@@ -38,8 +39,6 @@
 # https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide/Configuring_Secure_Boot
 # https://wiki.gentoo.org/wiki/Project:Distribution_Kernel
 # https://wiki.gentoo.org/wiki/Shim
-
-# Note: This script assumes a GPT partition table with an EFI and 1 unformatted Linux filsystem parition precreated (use parted/gparted to resize and create)
 
 set -u
 

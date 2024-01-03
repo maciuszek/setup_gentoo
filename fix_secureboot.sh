@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This scripts is intended to be executed after init_gentoo.sh has completed and secure boot keys in uefi have been cleared 
+
 set -u
 
 ROOT_PARTITION=$ROOT_PARTITION

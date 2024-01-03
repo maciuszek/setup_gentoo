@@ -1,5 +1,6 @@
 #!/bin/bash
-# Assumes secure boot keys in bios/uefi have been cleared (confirm keys are cleared with `efi-readvar`)
+# Assumes called by fix_secureboot.sh
+# Assumes secure boot keys in uefi have been cleared (confirm keys are cleared with `efi-readvar`)
 
 cd /etc/efikeys
 

@@ -130,31 +130,17 @@ EOF
     sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/gentoo/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
 }
 
-function install_extra_drivers {
-    emerge --ask nvidia-drivers
-}
-
-function install_extra_software {
-    emerge --ask net-misc/dhcpcd \
-        sys-apps/mlocate \
-        app-shells/bash-completion \
-        sys-fs/e2fsprogs \
-        sys-fs/dosfstools \
-        sys-block/io-scheduler-udev-rules \
-        net-wireless/iw net-wireless/wpa_supplicant \
-        app-admin/sudo \
+function setup_nvidia {
+    emerge --ask nvidia-drivers \
+        x11-misc/prime-run \
+        sys-apps/lshw \
         x11-apps/xrandr \
-        x11-apps/mesa-progs \
-        app-editors/vim \
-        app-editors/vscode
+        x11-apps/mesa-progs
 
-    emerge --ask www-client/google-chrome
-
-    systemctl enable dhcpcd
-    systemctl enable sshd
+    nvidia-xconfig --prime
 }
 
-function install_extra_gnome {
+function install_gnome {
     echo "media-libs/libsndfile minimal" > /etc/portage/package.use/libsndfile # Fix circular dependency
     emerge --ask gnome-base/gnome \
         gnome-extra/gnome-tweaks \
@@ -163,6 +149,25 @@ function install_extra_gnome {
 
     systemctl enable gdm.service
     systemctl enable NetworkManager.service
+}
+
+function install_extra_software {
+    emerge --ask app-portage/gentoolkit \
+        net-misc/dhcpcd \
+        sys-apps/mlocate \
+        app-shells/bash-completion \
+        sys-fs/e2fsprogs \
+        sys-fs/dosfstools \
+        sys-block/io-scheduler-udev-rules \
+        net-wireless/iw net-wireless/wpa_supplicant \
+        app-admin/sudo \
+        app-editors/vim \
+        app-editors/vscode
+
+    emerge --ask www-client/google-chrome
+
+    systemctl enable dhcpcd
+    systemctl enable sshd
 }
 
 function configure_installation {
@@ -193,7 +198,7 @@ function configure_installation {
     passwd
 
     read -p "Enter username for basic user: " USERNAME
-    useradd -m -G users,wheel,audio -s /bin/bash $USERNAME
+    useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
     passwd $USERNAME
 }
 
@@ -215,9 +220,10 @@ install_initrd
 create_secureboot_keys
 install_bootloader
 
-install_drivers
-install_software
+setup_nvidia
+
 install_gnome
+install_extra_software
 
 configure_installation
 
