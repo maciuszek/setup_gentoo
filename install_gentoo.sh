@@ -124,7 +124,7 @@ EOF
     grub-mkconfig -o /boot/grub/grub.cfg
     grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
     emerge --ask sys-boot/efibootmgr
-    efibootmgr --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
+    efibootmgr --create --label "Gentoo Linux Grub" --loader /EFI/gentoo/grubx64.efi
 
     sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
     sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/gentoo/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
