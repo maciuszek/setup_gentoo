@@ -31,7 +31,6 @@ LC_MESSAGES=C.utf8
 +MAKEOPTS="-j4 -l4"
 +USE="\${USE} networkmanager dist-kernel dbus"
 +VIDEO_CARDS="intel nvidia"
-+ABI_X86="32 64"
 +ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE Microsoft-vscode google-chrome"
 EOF
     emerge --ask app-portage/mirrorselect
