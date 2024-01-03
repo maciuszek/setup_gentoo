@@ -108,6 +108,17 @@ function create_secureboot_keys {
 }
 
 function install_bootloader {
+    cp /etc/fstab /etc/fstab.orig
+    EFI_PARTITION_UUID=$(source <(blkid | grep ^$EFI_PARTITION: | awk -F': ' '{ print $2 }') && echo $UUID)
+    DECRYPTED_ROOT_PARITITON_UUID=$(source <(blkid | grep ^/dev/mapper/root: | awk -F': ' '{ print $2 }') && echo $UUID)
+    echo "UUID=$EFI_PARTITION_UUID	/efi	vfat	noauto,noatime	0 1" >> /etc/fstab
+    echo "UUID=$DECRYPTED_ROOT_PARITITON_UUID	/	ext4	defaults	0 1" >> /etc/fstab
+
+    fallocate -l 12GiB /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    echo "/swapfile	none	swap	sw	0 0" >> /etc/fstab
+
     echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
     echo "sys-boot/grub:2 device-mapper" > /etc/portage/package.use/grub2
     emerge --ask sys-boot/grub
@@ -123,6 +134,7 @@ function install_bootloader {
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
     grub-mkconfig -o /boot/grub/grub.cfg
+    mkdir /efi/EFI/gentoo/
     grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
     emerge --ask sys-boot/efibootmgr
     efibootmgr --create --label "Gentoo Linux Grub" --loader /EFI/gentoo/grubx64.efi
@@ -178,17 +190,6 @@ function configure_installation {
     ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # Hardcoding
 
     eselect locale set 4 # Hardcoding en_US (run `eselect locale list` to see the options)
-
-    cp /etc/fstab /etc/fstab.orig
-    EFI_PARTITION_UUID=$(source <(blkid | grep ^$EFI_PARTITION: | awk -F': ' '{ print $2 }') && echo $UUID)
-    DECRYPTED_ROOT_PARITITON_UUID=$(source <(blkid | grep ^/dev/mapper/root: | awk -F': ' '{ print $2 }') && echo $UUID)
-    echo "UUID=$EFI_PARTITION_UUID	/efi	vfat	noauto,noatime	0 1" >> /etc/fstab
-    echo "UUID=$DECRYPTED_ROOT_PARITITON_UUID	/	ext4	defaults	0 1" >> /etc/fstab
-
-    fallocate -l 12GiB /swapfile
-    chmod 600 /swapfile
-    mkswap /swapfile
-    echo "/swapfile	none	swap	sw	0 0" >> /etc/fstab
 
     systemd-machine-id-setup
     systemd-firstboot --prompt
