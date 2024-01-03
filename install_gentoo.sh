@@ -207,8 +207,6 @@ function configure_installation {
 
 function clean_installation {
     emerge --depclean
-    
-    # Leave installation files
 }
 
 export EFI_PARTITION ROOT_PARTITION
