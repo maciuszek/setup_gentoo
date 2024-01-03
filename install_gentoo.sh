@@ -37,7 +37,7 @@ EOF
     mirrorselect -i -o >> /etc/portage/make.conf # https://mirror.csclub.uwaterloo.ca/gentoo-distfiles
 
     emerge --ask app-portage/cpuid2cpuflags
-    echo "$(cpuid2cpuflags)" > /etc/portage/make.conf
+    echo "$(cpuid2cpuflags | sed 's/: /=\"/' | sed 's/$/\"/')" >> /etc/portage/make.conf
 
     echo 'sys-apps/systemd cryptsetup' > /etc/portage/package.use/systemd
 
