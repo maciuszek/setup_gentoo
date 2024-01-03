@@ -201,13 +201,13 @@ function configure_installation {
     read -p "Enter username for basic user: " USERNAME
     useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
     passwd $USERNAME
+
+    env-update
 }
 
 function clean_installation {
     emerge --depclean
-
-    env-update
-
+    
     # Leave installation files
 }
 
