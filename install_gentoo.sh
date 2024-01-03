@@ -206,6 +206,8 @@ function configure_installation {
 function clean_installation {
     emerge --depclean
 
+    env-update
+
     # Leave installation files
 }
 
