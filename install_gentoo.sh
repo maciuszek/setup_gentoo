@@ -160,6 +160,7 @@ function install_gnome {
         gnome-extra/gnome-tweaks \
         net-misc/networkmanager \
         net-wireless/bluez \
+        sys-firmware/sof-firmware \
         media-sound/alsa-utils \
 	media-sound/pulseaudio \
         media-sound/pavucontrol \
