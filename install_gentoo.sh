@@ -171,7 +171,7 @@ function install_gnome {
     systemctl enable gdm.service
     systemctl enable NetworkManager.service
     systemctl enable bluetooth.service
-    # systemctl --user enable pulseaudio.service pulseaudio.socket
+    systemctl --global enable pulseaudio.service pulseaudio.socket
 }
 
 function install_extra_software {
