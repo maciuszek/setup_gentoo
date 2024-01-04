@@ -69,6 +69,7 @@ function install_initrd {
 
 function create_secureboot_keys {
     emerge --ask app-crypt/sbsigntools \
+        sys-boot/efibootmgr \
         app-crypt/efitools \
         dev-libs/openssl
 
