@@ -14,3 +14,5 @@ efi-readvar -v PK -o new_PK.esl
 efi-readvar -v KEK -o new_KEK.esl
 efi-readvar -v db -o new_db.esl
 efi-readvar -v dbx -o new_dbx.esl
+
+# rm install_secureboot_keys.sh
