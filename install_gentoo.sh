@@ -144,7 +144,6 @@ EOF
 }
 
 function setup_nvidia {
-    echo "x11-drivers/nvidia-drivers abi_x86_32" > /etc/portage/package.use/nvidia-drivers
     emerge --ask x11-drivers/nvidia-drivers \
         x11-misc/prime-run \
         sys-apps/lshw \
