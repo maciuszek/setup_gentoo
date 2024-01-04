@@ -206,6 +206,7 @@ function configure_installation {
 
 function clean_installation {
     emerge --depclean
+    # rm /install_gentoo.sh
 }
 
 export EFI_PARTITION ROOT_PARTITION
