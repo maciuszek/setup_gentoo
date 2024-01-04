@@ -29,7 +29,7 @@ FCFLAGS="\${COMMON_FLAGS}"
 LC_MESSAGES=C.utf8
 +
 +MAKEOPTS="-j4 -l4"
-+USE="\${USE} networkmanager dist-kernel dbus"
++USE="\${USE} networkmanager dist-kernel dbus bluetooth pulseaudio alsa"
 +VIDEO_CARDS="intel nvidia"
 +ACCEPT_LICENSE="-* @FREE @BINARY-REDISTRIBUTABLE Microsoft-vscode google-chrome"
 EOF
@@ -47,7 +47,7 @@ EOF
 }
 
 function install_kernel {
-    emerge --ask sys-kernel/linux-firmware 
+    emerge --ask sys-kernel/linux-firmware
     emerge --ask sys-firmware/intel-microcode # Hardcoding For Intel CPU https://wiki.gentoo.org/wiki/Microcode#Microcode_firmware_blobs
     emerge --ask sys-kernel/installkernel-gentoo
     emerge --ask sys-kernel/gentoo-kernel
@@ -69,7 +69,6 @@ function install_initrd {
 
 function create_secureboot_keys {
     emerge --ask app-crypt/sbsigntools \
-        sys-boot/efibootmgr \
         app-crypt/efitools \
         dev-libs/openssl
 
@@ -85,7 +84,7 @@ function create_secureboot_keys {
     openssl req -new -x509 -newkey rsa:2048 -subj "/CN=maciuszek's key-exchange-key/" -keyout KEK.key -out KEK.crt -days 3650 -nodes -sha256
     openssl req -new -x509 -newkey rsa:2048 -subj "/CN=maciuszek's kernel-signing key/" -keyout db.key -out db.crt -days 3650 -nodes -sha256
 
-    chmod -v 400 *.key 
+    chmod -v 400 *.key
 
     cert-to-efi-sig-list -g "$(uuidgen)" PK.crt PK.esl
     sign-efi-sig-list -k PK.key -c PK.crt PK PK.esl PK.auth
@@ -134,14 +133,17 @@ function install_bootloader {
 +
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
-    grub-install --efi-directory=/efi --bootloader-id="Gentoo Linux Grub"
     grub-mkconfig -o /boot/grub/grub.cfg
-    grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi "/boot/grub/grub.cfg" -v
+    grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
+    sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/gentoo/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
 
-    sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi
-    sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
+    emerge --ask sys-boot/efibootmgr
+    efibootmgr --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
+
+    sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
 }
 
+# todo move to post-install
 function setup_nvidia {
     emerge --ask x11-drivers/nvidia-drivers \
         x11-misc/prime-run \
@@ -157,10 +159,18 @@ function install_gnome {
     emerge --ask gnome-base/gnome \
         gnome-extra/gnome-tweaks \
         net-misc/networkmanager \
+        net-wireless/bluez \
+        media-sound/alsa-utils \
+	media-sound/pulseaudio \
+        media-sound/pavucontrol \
+        media-plugins/alsa-plugins \
+        media-sound/gnome-sound-recorder-42.0 \
         dev-vcs/gitg
 
     systemctl enable gdm.service
     systemctl enable NetworkManager.service
+    systemctl enable bluetooth.service
+    # systemctl --user enable pulseaudio.service pulseaudio.socket
 }
 
 function install_extra_software {
@@ -183,10 +193,11 @@ function install_extra_software {
     systemctl enable sshd
 }
 
+# todo review handbook (bootloader and later) and move appropriate things to post_install
 function configure_installation {
     cp /etc/localtime /etc/localtime.orig
     ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # Hardcoding
-    timedatectl set-local-rtc 1
+    timedatectl set-local-rtc 1 # todo move to post install
 
     eselect locale set 4 # Hardcoding en_US (run `eselect locale list` to see the options)
 

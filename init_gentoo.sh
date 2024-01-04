@@ -17,6 +17,9 @@
 # https://wiki.gentoo.org/wiki/Systemd
 # https://wiki.gentoo.org/wiki/GNOME/Guide
 # https://wiki.gentoo.org/wiki/NetworkManager
+# https://wiki.gentoo.org/wiki/ALSA
+# https://wiki.gentoo.org/wiki/PulseAudio
+# https://wiki.gentoo.org/wiki/Bluetooth
 # https://wiki.gentoo.org/wiki/USE_flag
 # https://www.gentoo.org/support/use-flags/
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
