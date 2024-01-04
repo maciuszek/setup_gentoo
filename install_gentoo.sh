@@ -174,6 +174,7 @@ function install_extra_software {
         sys-block/io-scheduler-udev-rules \
         net-wireless/iw net-wireless/wpa_supplicant \
         app-admin/sudo \
+        app-editors/nano \
         app-editors/vim \
         app-editors/vscode
 
