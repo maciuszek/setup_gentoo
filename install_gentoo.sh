@@ -133,14 +133,12 @@ function install_bootloader {
 +
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
+    grub-install --efi-directory=/efi --bootloader-id="Gentoo Linux Grub"
     grub-mkconfig -o /boot/grub/grub.cfg
-    mkdir /efi/EFI/gentoo/
-    grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
-    emerge --ask sys-boot/efibootmgr
-    efibootmgr --create --label "Gentoo Linux Grub" --loader /EFI/gentoo/grubx64.efi
+    grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi "/boot/grub/grub.cfg" -v
 
-    sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
-    sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/gentoo/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
+    sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi
+    sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/Gentoo\ Linux\ Grub/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
 }
 
 function setup_nvidia {
