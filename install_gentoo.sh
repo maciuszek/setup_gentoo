@@ -186,6 +186,7 @@ function install_extra_software {
 function configure_installation {
     cp /etc/localtime /etc/localtime.orig
     ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # Hardcoding
+    timedatectl set-local-rtc 1
 
     eselect locale set 4 # Hardcoding en_US (run `eselect locale list` to see the options)
 
