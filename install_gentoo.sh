@@ -192,7 +192,7 @@ function configure_installation {
     eselect locale set 4 # Hardcoding en_US (run `eselect locale list` to see the options)
 
     systemd-machine-id-setup
-    systemd-firstboot --prompt
+    systemd-firstboot --prompt # Set keymap to 'us'. Set hostname to match Windows hostname 
     systemctl preset-all --preset-mode=enable-only
 
     systemctl enable systemd-timesyncd.service
