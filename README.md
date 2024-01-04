@@ -13,4 +13,5 @@ Hardware requirements: UEFI, NVMe SSD, x86-64 Intel CPU and Nvidia GPU
 9. Boot into a live Gentoo environment
 10. Run: env ROOT_PARTITION='PATH_TO_GENTOO_INSTALLATION_BLOCK_DEVICE' fix_secureboot.sh
 11. Reboot into BIOS and enable Secure Boot
-// todo add post install information
+12. Boot into the gentoo installation and login as root
+13. Run: bash /post_install.sh

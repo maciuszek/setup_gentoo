@@ -44,6 +44,8 @@ EOF
     eselect profile set 8 # Hardcoding default/linux/amd64/17.1/desktop/gnome/systemd/merged-usr (run `eselect profile list` to see the options)
 
     emerge --ask --verbose --update --deep --newuse @world
+
+    env-update && source /etc/profile
 }
 
 function install_kernel {
@@ -51,20 +53,26 @@ function install_kernel {
     emerge --ask sys-firmware/intel-microcode # Hardcoding For Intel CPU https://wiki.gentoo.org/wiki/Microcode#Microcode_firmware_blobs
     emerge --ask sys-kernel/installkernel-gentoo
     emerge --ask sys-kernel/gentoo-kernel
+
+    env-update && source /etc/profile
 }
 
-function install_initrd {
+function create_crypttab {
     # https://forum.endeavouros.com/t/encrypting-root-with-dracut-grub-systemd-cryptsetup-generator/40418/13
     # https://forums.gentoo.org/viewtopic-t-1062058-start-0.html
     # https://superuser.com/questions/919590/dm-crypt-with-luks-etc-crypttab-using-either-keyfile-or-passphrase
     ROOT_PARTITION_UUID=$(source <(blkid | grep ^$ROOT_PARTITION: | awk -F': ' '{ print $2 }') && echo $UUID)
     echo "root	UUID=$ROOT_PARTITION_UUID	/crypt_key.luks	ext4	luks,discard" > /etc/crypttab # Hardcoding for NVMe TRIM https://man7.org/linux/man-pages/man5/crypttab.5.html#:~:text=discard
+}
 
+function install_initrd {
     emerge --ask sys-kernel/dracut
     cp /etc/dracut.conf /etc/dracut.conf.orig
     echo 'add_dracutmodules+=" crypt dm rootfs-block "' >> /etc/dracut.conf
     echo 'install_items+=" /etc/crypttab /crypt_key.luks "' >> /etc/dracut.conf
     dracut --force --kver $(eselect kernel show | grep '/usr/src/linux-' | awk -F '/usr/src/linux-' '{ print $2 }')
+
+    env-update && source /etc/profile
 }
 
 function create_secureboot_keys {
@@ -107,18 +115,22 @@ function create_secureboot_keys {
     sign-efi-sig-list -k KEK.key -c KEK.crt db compound_db.esl compound_db.auth
 }
 
-function install_bootloader {
+function create_fstab {
     cp /etc/fstab /etc/fstab.orig
     EFI_PARTITION_UUID=$(source <(blkid | grep ^$EFI_PARTITION: | awk -F': ' '{ print $2 }') && echo $UUID)
     DECRYPTED_ROOT_PARITITON_UUID=$(source <(blkid | grep ^/dev/mapper/root: | awk -F': ' '{ print $2 }') && echo $UUID)
     echo "UUID=$EFI_PARTITION_UUID	/efi	vfat	noauto,noatime	0 1" >> /etc/fstab
     echo "UUID=$DECRYPTED_ROOT_PARITITON_UUID	/	ext4	defaults	0 1" >> /etc/fstab
+}
 
+function create_swap_file {
     fallocate -l 12GiB /swapfile
     chmod 600 /swapfile
     mkswap /swapfile
     echo "/swapfile	none	swap	sw	0 0" >> /etc/fstab
+}
 
+function install_bootloader {
     echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
     echo "sys-boot/grub:2 device-mapper" > /etc/portage/package.use/grub2
     emerge --ask sys-boot/grub
@@ -141,103 +153,71 @@ EOF
     efibootmgr --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
 
     sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
-}
 
-# todo move to post-install
-function setup_nvidia {
-    emerge --ask x11-drivers/nvidia-drivers \
-        x11-misc/prime-run \
-        sys-apps/lshw \
-        x11-apps/xrandr \
-        x11-apps/mesa-progs
-
-    nvidia-xconfig --prime
-}
-
-function install_gnome {
-    echo "media-libs/libsndfile minimal" > /etc/portage/package.use/libsndfile # Fix circular dependency
-    emerge --ask gnome-base/gnome \
-        gnome-extra/gnome-tweaks \
-        net-misc/networkmanager \
-        net-wireless/bluez \
-        sys-firmware/sof-firmware \
-        media-sound/alsa-utils \
-	media-sound/pulseaudio \
-        media-sound/pavucontrol \
-        media-plugins/alsa-plugins \
-        media-sound/gnome-sound-recorder-42.0 \
-        dev-vcs/gitg
-
-    systemctl enable gdm.service
-    systemctl enable NetworkManager.service
-    systemctl enable bluetooth.service
-    systemctl --global enable pulseaudio.service pulseaudio.socket
+    env-update && source /etc/profile
 }
 
 function install_extra_software {
-    emerge --ask app-portage/gentoolkit \
-        net-misc/dhcpcd \
-        sys-apps/mlocate \
-        app-shells/bash-completion \
-        sys-fs/e2fsprogs \
-        sys-fs/dosfstools \
-        sys-block/io-scheduler-udev-rules \
-        net-wireless/iw net-wireless/wpa_supplicant \
-        app-admin/sudo \
-        app-editors/nano \
-        app-editors/vim \
-        app-editors/vscode
-
-    emerge --ask www-client/google-chrome
-
+    emerge --ask net-misc/dhcpcd \
+            sys-apps/mlocate \
+            app-shells/bash-completion \
+            sys-fs/e2fsprogs \
+            sys-fs/dosfstools \
+            sys-block/io-scheduler-udev-rules \
+            net-wireless/iw net-wireless/wpa_supplicant \
+            app-portage/gentoolkit \
+            app-admin/sudo \
+            app-editors/nano
+    
     systemctl enable dhcpcd
     systemctl enable sshd
+
+    env-update && source /etc/profile
 }
 
-# todo review handbook (bootloader and later) and move appropriate things to post_install
 function configure_installation {
+    eselect locale set 4 # Hardcoding en_US (run `eselect locale list` to see the options)
+
     cp /etc/localtime /etc/localtime.orig
     ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime # Hardcoding
-    timedatectl set-local-rtc 1 # todo move to post install
 
-    eselect locale set 4 # Hardcoding en_US (run `eselect locale list` to see the options)
+    systemctl enable systemd-timesyncd.service
+
+    # hostnamectl hostname tux
 
     systemd-machine-id-setup
     systemd-firstboot --prompt # Set keymap to 'us'. Set hostname to match Windows hostname 
     systemctl preset-all --preset-mode=enable-only
 
-    systemctl enable systemd-timesyncd.service
-
-    env-update
-
     passwd
 
-    read -p "Enter username for basic user: " USERNAME
-    useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
-    passwd $USERNAME
+    env-update && source /etc/profile
 }
 
 function clean_installation {
     emerge --depclean
-    # rm /install_gentoo.sh
+    # rm /stage3-*.tar.*
+
+    env-update && source /etc/profile
 }
 
+source /etc/profile
+
 export EFI_PARTITION ROOT_PARTITION
+
 mkdir /efi
 mount $EFI_PARTITION /efi
 
 install_base_system
 install_kernel
-
+create_crypttab
 install_initrd
 create_secureboot_keys
+create_fstab
+create_swap_file
 install_bootloader
-
-setup_nvidia
-
-install_gnome
 install_extra_software
-
 configure_installation
-
 clean_installation
+
+# rm /install_gentoo.sh

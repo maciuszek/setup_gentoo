@@ -2,6 +2,8 @@
 # Assumes called by fix_secureboot.sh
 # Assumes secure boot keys in uefi have been cleared (confirm keys are cleared with `efi-readvar`)
 
+source /etc/profile
+
 cd /efikeys
 
 efi-updatevar -e -f old_dbx.esl dbx
