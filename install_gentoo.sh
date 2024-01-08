@@ -145,6 +145,7 @@ function install_bootloader {
 +
 +GRUB_ENABLE_CRYPTODISK=y
 EOF
+    grub-install --efi-directory=/efi
     grub-mkconfig -o /boot/grub/grub.cfg
     grub-mkstandalone --disable-shim-lock --fonts=all -O x86_64-efi -o /efi/EFI/gentoo/grubx64.efi "/boot/grub/grub.cfg" -v
     sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/gentoo/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
