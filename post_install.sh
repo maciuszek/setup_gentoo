@@ -38,7 +38,7 @@ function install_gnome {
     emerge --ask gnome-base/gnome \
         gnome-extra/gnome-tweaks \
         net-misc/networkmanager
-    
+
     systemctl enable gdm.service
     systemctl enable NetworkManager.service
 
@@ -73,6 +73,7 @@ function clean_post_installation {
 
 setup_nvidia
 setup_sound
+setup_bluetooth
 install_gnome
 install_extra_software
 configure_localtime
