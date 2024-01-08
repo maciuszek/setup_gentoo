@@ -8,6 +8,8 @@ function setup_nvidia {
         x11-apps/xrandr \
         x11-apps/mesa-progs
 
+    modprobe -r nouveau
+    modprobe nvidia
     nvidia-xconfig --prime
 
     env-update && source /etc/profile
