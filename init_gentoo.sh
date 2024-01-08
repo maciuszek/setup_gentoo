@@ -70,7 +70,7 @@ sudo tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner)
 echo "Rooting into the installation..."
 
 sudo cp install_gentoo.sh /mnt/gentoo/
-sudo cp post_gentoo.sh /mnt/gentoo/
+sudo cp post_install.sh /mnt/gentoo/
 sudo arch-chroot /mnt/gentoo/ /usr/bin/env \
     EFI_PARTITION=$EFI_PARTITION \
     ROOT_PARTITION=$ROOT_PARTITION \
