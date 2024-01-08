@@ -151,7 +151,8 @@ EOF
     sed -i 's/SecureBoot/SecureB00t/' /efi/EFI/gentoo/grubx64.efi # https://wejn.org/2021/09/fixing-grub-verification-requested-nobody-cares/
 
     emerge --ask sys-boot/efibootmgr
-    efibootmgr --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
+    #efibootmgr --bootnum 0000 --delete-bootnum
+    #efibootmgr --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
 
     sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
 
