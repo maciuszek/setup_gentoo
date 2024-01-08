@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function setup_nvidia {
     emerge --ask x11-drivers/nvidia-drivers \
         x11-misc/prime-run \
