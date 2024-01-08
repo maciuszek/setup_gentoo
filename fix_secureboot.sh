@@ -17,3 +17,5 @@ echo "Rooting into the installation..."
 sudo cp install_secureboot_keys.sh /mnt/gentoo/
 sudo arch-chroot /mnt/gentoo/ \
     /bin/bash install_secureboot_keys.sh /
+
+sudo umount -R /mnt/gentoo
