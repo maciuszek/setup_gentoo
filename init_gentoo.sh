@@ -71,6 +71,7 @@ echo "Rooting into the installation..."
 
 sudo cp install_gentoo.sh /mnt/gentoo/
 sudo cp post_install.sh /mnt/gentoo/
+sudo cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 sudo arch-chroot /mnt/gentoo/ /usr/bin/env \
     EFI_PARTITION=$EFI_PARTITION \
     ROOT_PARTITION=$ROOT_PARTITION \
