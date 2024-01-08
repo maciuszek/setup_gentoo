@@ -76,3 +76,5 @@ sudo arch-chroot /mnt/gentoo/ /usr/bin/env \
     EFI_PARTITION=$EFI_PARTITION \
     ROOT_PARTITION=$ROOT_PARTITION \
     /bin/bash install_gentoo.sh
+
+sudo umount -R /mnt/gentoo
