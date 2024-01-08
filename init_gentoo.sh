@@ -70,6 +70,7 @@ sudo tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner)
 echo "Rooting into the installation..."
 
 sudo cp install_gentoo.sh /mnt/gentoo/
+sudo cp install_secureboot_keys.sh /mnt/gentoo/
 sudo cp post_install.sh /mnt/gentoo/
 sudo cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 sudo arch-chroot /mnt/gentoo/ /usr/bin/env \

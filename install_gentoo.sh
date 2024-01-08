@@ -155,6 +155,7 @@ EOF
     #efibootmgr --create --label "gentoo" --loader /EFI/gentoo/grubx64.efi
 
     sbsign --key /efikeys/db.key --cert /efikeys/db.crt --output /efi/EFI/gentoo/grubx64.efi /efi/EFI/gentoo/grubx64.efi
+    # confirm signature with `sbverify --cert /efikeys/db.crt /efi/EFI/gentoo/grubx64.efi`
 
     env-update && source /etc/profile
 }
