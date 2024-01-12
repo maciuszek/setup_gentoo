@@ -51,7 +51,8 @@ function install_extra_software {
         app-editors/vscode \
         dev-vcs/gitg \
         www-client/google-chrome \
-        media-sound/gnome-sound-recorder
+        media-sound/gnome-sound-recorder \
+	net-firewall/firewalld
 
     env-update && source /etc/profile
 }
