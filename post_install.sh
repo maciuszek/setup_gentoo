@@ -51,9 +51,12 @@ function install_extra_software {
         app-editors/vscode \
         dev-vcs/gitg \
         www-client/google-chrome \
-        media-sound/gnome-sound-recorder \
-	net-firewall/firewalld
+        media-sound/gnome-sound-recorder
 
+    echo 'net-firewall/nftables json python xtables' > /etc/portage/package.use/nftables
+    emerge --ask net-firewall/firewalld
+    systemctl enable firewalld.service
+    
     env-update && source /etc/profile
 }
 
