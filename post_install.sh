@@ -63,8 +63,8 @@ function install_extra_software {
     echo 'OnAccessExcludeUname clamav' >> /etc/clamav/clamd.conf
 
     systemctl enable clamav-freshclam.service
-    systemctl enable clamd.service
     systemctl enable clamav-daemon.service
+    # todo figure out how clamd.service and freshclamd.service differ
     # todo determine how to start clamonacc
 
     env-update && source /etc/profile
