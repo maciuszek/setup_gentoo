@@ -56,6 +56,16 @@ function install_extra_software {
     echo 'net-firewall/nftables json python xtables' > /etc/portage/package.use/nftables
     emerge --ask net-firewall/firewalld
     systemctl enable firewalld.service
+
+    emerge --ask app-antivirus/clamav
+    echo 'OnAccessPrevention yes' >> /etc/clamav/clamd.conf
+    echo 'OnAccessIncludePath /home/maciuszek/Download' >> /etc/clamav/clamd.conf
+    echo 'OnAccessExcludeUname clamav' >> /etc/clamav/clamd.conf
+
+    systemctl enable clamav-freshclam.service
+    systemctl enable clamd.service
+    systemctl enable clamav-daemon.service
+    # todo determine how to start clamonacc
     
     env-update && source /etc/profile
 }
