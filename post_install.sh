@@ -1,11 +1,5 @@
 #!/bin/bash
 
-function setup_user {
-    read -p "Enter username for basic user: " USERNAME
-    useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
-    passwd $USERNAME
-}
-
 function setup_nvidia {
     emerge --ask x11-drivers/nvidia-drivers \
         x11-misc/prime-run \
@@ -73,9 +67,13 @@ function install_extra_software {
     systemctl enable clamav-daemon.service
     # todo determine how to start clamonacc
 
-    usermod -a -G clamav maciuszek
-
     env-update && source /etc/profile
+}
+
+function setup_user {
+    read -p "Enter username for basic user: " USERNAME
+    useradd -m -G users,wheel,audio,video,clamav -s /bin/bash $USERNAME
+    passwd $USERNAME
 }
 
 function configure_localtime {
@@ -88,12 +86,12 @@ function clean_post_installation {
     env-update && source /etc/profile
 }
 
-setup_user
 setup_nvidia
 setup_sound
 setup_bluetooth
 install_gnome
 install_extra_software
+setup_user
 configure_localtime
 clean_post_installation
 
