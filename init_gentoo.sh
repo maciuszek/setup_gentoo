@@ -42,6 +42,7 @@
 # https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide/Configuring_Secure_Boot
 # https://wiki.gentoo.org/wiki/Project:Distribution_Kernel
 # https://wiki.gentoo.org/wiki/Shim
+# https://wiki.gentoo.org/wiki/Firewalld
 
 set -u
 
